@@ -1,6 +1,8 @@
 from botocore.exceptions import ClientError
 import logging
 from face import RekognitionFace
+from labels import RekognitionLabel
+from moderation import RekognitionModerationLabel
 logger = logging.getLogger("rekognition_image")
 class RekognitionImage:
     
@@ -10,7 +12,7 @@ class RekognitionImage:
     """
 
     def __init__(self, image, image_name, rekognition_client):
-        print("tis is ************",image_name)
+        # print("tis is ************",image_name)
         """
         Initializes the image object.
 
@@ -34,13 +36,13 @@ class RekognitionImage:
             response = self.rekognition_client.detect_faces(
                 Image=self.image, Attributes=["ALL"]
             )
-            # faces = [RekognitionFace(face) for face in response["FaceDetails"]]
-            # logger.info("Detected %s faces.", len(faces))
+            faces = [RekognitionFace(face) for face in response["FaceDetails"]]
+            logger.info("Detected %s faces.", len(faces))
         except ClientError:
             logger.exception("Couldn't detect faces in %s.", self.image_name)
             raise
         else:
-            return response
+            return faces
 
 
     def detect_labels(self, max_labels):
@@ -94,10 +96,10 @@ class RekognitionImage:
         """
         try:
             response = self.rekognition_client.detect_text(Image=self.image)
-            texts = [RekognitionText(text) for text in response["TextDetections"]]
-            logger.info("Found %s texts in %s.", len(texts), self.image_name)
+            # texts = [RekognitionText(text) for text in response["TextDetections"]]
+            # logger.info("Found %s texts in %s.", len(texts), self.image_name)
         except ClientError:
             logger.exception("Couldn't detect text in %s.", self.image_name)
             raise
         else:
-            return texts
+            return response

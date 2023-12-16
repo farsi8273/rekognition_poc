@@ -24,9 +24,9 @@ def analyze_faces():
     # Create RekognitionImage instance and use detect_faces
     rekognition_image = RekognitionImage(Image, image_name,rekognition_client)
     faces = rekognition_image.detect_faces()
-    return faces
+    # return faces
     # Return detected faces as JSON
-    # return jsonify({"faces": [face.to_dict() for face in faces]})
+    return jsonify({"faces": [face.to_dict() for face in faces]})
 
 
 @app.route("/analyze/labels", methods=["POST"])
@@ -39,7 +39,6 @@ def analyze_labels():
     # Create RekognitionImage instance and use detect_labels
     rekognition_image = RekognitionImage(Image, image_name,rekognition_client)
     labels = rekognition_image.detect_labels(max_labels)
-
     # Return detected labels as JSON
     return jsonify({"labels": [label.to_dict() for label in labels]})
 
@@ -49,9 +48,9 @@ def analyze_moderation():
     # Get image data from request
     image_data = request.files["image"].read()
     image_name = request.files["image"].filename
-
+    Image={"Bytes": image_data}
     # Create RekognitionImage instance and use detect_moderation_labels
-    rekognition_image = RekognitionImage(image_data, image_name)
+    rekognition_image = RekognitionImage(Image, image_name,rekognition_client)
     moderation_labels = rekognition_image.detect_moderation_labels()
 
     # Return moderation labels as JSON
@@ -63,11 +62,11 @@ def analyze_text():
     # Get image data from request
     image_data = request.files["image"].read()
     image_name = request.files["image"].filename
-
+    Image={"Bytes": image_data}
     # Create RekognitionImage instance and use detect_text
-    rekognition_image = RekognitionImage(image_data, image_name)
+    rekognition_image = RekognitionImage(Image, image_name,rekognition_client)
     texts = rekognition_image.detect_text()
-
+    return texts
     # Return detected text as JSON
     return jsonify({"text": [text.to_dict() for text in texts]})
 
