@@ -2,9 +2,10 @@ from flask import Flask, request, jsonify
 from RekognitionImage import RekognitionImage
 import boto3
 import base64
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 # Replace 'your_access_key', 'your_secret_key', and 'your_region' with your AWS credentials
 aws_access_key = 'AKIAXUYDI7HIDJBV2VRZ'
 aws_secret_key = 'F5Z1p87csUcvKSoJantSY9FdGgPLDEEoeYkveHro'
@@ -16,8 +17,6 @@ rekognition_client = boto3.client('rekognition', aws_access_key_id=aws_access_ke
 def analyze_faces():
     # Get image data from request
     image_data = request.files["image"].read()
-    # Encode the image data in base64 format
-    encoded_image = base64.b64encode(image_data)
     Image={"Bytes": image_data}
     image_name = request.files["image"].filename
 

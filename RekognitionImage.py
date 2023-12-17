@@ -1,5 +1,8 @@
 from botocore.exceptions import ClientError
 import logging
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__),'parser'))
 from face import RekognitionFace
 from labels import RekognitionLabel
 from moderation import RekognitionModerationLabel
@@ -12,7 +15,6 @@ class RekognitionImage:
     """
 
     def __init__(self, image, image_name, rekognition_client):
-        # print("tis is ************",image_name)
         """
         Initializes the image object.
 
